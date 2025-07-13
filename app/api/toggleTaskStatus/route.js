@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import users from "@/models/userModel";
+import {connectDB} from "@/utils/mongo"
 export async function POST(request){
+    await connectDB()
     const req=await request.json()
     const {userId,taskId,isCompleted}=req
     try {

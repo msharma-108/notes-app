@@ -18,7 +18,7 @@ export const metadata = {
 
 
 import connectDB from "@/utils/mongo"
-await connectDB()
+
 
 export default function RootLayout({ children }) {
   return (

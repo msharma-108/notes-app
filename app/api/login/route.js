@@ -3,8 +3,9 @@ import users from "@/models/userModel"
 import bcrypt from "bcryptjs"
 import { cookies } from "next/headers"
 import jwt from "jsonwebtoken"
+import {connectDB} from "@/utils/mongo"
 export async function POST(request){
-
+    await connectDB()
     const req=await request.json()
     const{email,password}=req
     if(!email || !password) return NextResponse.json({success:false,message:"Email and password are required"})

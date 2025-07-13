@@ -139,25 +139,25 @@ const dashboard = () => {
                 <h1 className="text-xl font-semibold text-gray-900">My Workspace</h1>
               </div>
               
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <User className="h-5 w-5 text-gray-500" />
-                  <span className="text-sm text-gray-700">{user?.username}</span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className='hidden md:block'>Logout</span>
-                </button>
-              </div>
+              <div className="flex items-center">
+  <div className="flex items-center w-1/10 sm:w-auto  min-w-0 flex-1">
+    <User className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 flex-shrink-0" />
+    <div className="text-xs sm:text-sm w-3/5 sm:w-auto overflow-ellipsis text-gray-700 truncate">{user?.username}</div>
+  </div>
+  <button
+    onClick={handleLogout}
+    className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium flex-shrink-0"
+  >
+    <LogOut className="h-4 w-4" />
+    <span className='hidden sm:block'>Logout</span>
+  </button>
+</div>
             </div>
           </div>
         </nav>
   
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
           {/* Tab Navigation */}
           <div className="mb-8">
             <nav className="flex space-x-8">
@@ -190,62 +190,66 @@ const dashboard = () => {
           
           {activeTab === 'notes' &&(
            
+           <div className="w-full">
+  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+    <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Notes</h2>
+    <button
+      onClick={() => openNoteModal()}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2 w-full sm:w-auto justify-center"
+    >
+      <PlusCircle className="h-4 w-4" />
+      <span>Add Note</span>
+    </button>
+  </div>
+
+  <div className="grid w-full gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    {user?.notes && (user.notes.map((note) => (
+      <div key={note._id} className="bg-white w-full rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+        <div className="flex w-full justify-between items-start mb-4 gap-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 overflow-hidden text-ellipsis pr-2 flex-1 min-w-0">{note.title}</h3>
+          <div className="flex space-x-2 flex-shrink-0">
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Notes</h2>
-                <button
-                  onClick={() => openNoteModal()}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2"
-                >
-                  <PlusCircle className="h-4 w-4" />
-                  <span>Add Note</span>
-                </button>
-              </div>
-  
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-             {user?.notes && (user.notes.map((note) => (
-                  <div key={note._id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900 truncate">{note.title}</h3>
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => openNoteModal(note)}
-                          className="text-gray-400 hover:text-blue-600"
-                        >
-                          <Edit2 className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => deleteField("notes",note._id)}
-                          className="text-gray-400 hover:text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{note.description}</p>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-500">{note.createdAt}</span>
-                      <button
-                        onClick={() => generateAISummary(note._id)}
-                        disabled={summaryObj?.id === note._id && summaryObj?.aiResponse}
-                        className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-3 py-1 rounded-full text-xs flex items-center space-x-1 disabled:opacity-50"
-                      >
-                        <Sparkles className="h-3 w-3" />
-                        <span>{(!responseLoaded && summaryObj?.id===note._id) ? 'Generating...' : 'AI Summary'}</span>
-                      </button>
-                    </div>
-                    
-                    {summaryObj?.id===note._id && summaryObj?.aiResponse && (
-                      <div onClick={()=>{setSummaryObj(null)}} className="mt-4 p-3 cursor-pointer bg-purple-50 rounded-md">
-                        <p className="text-sm text-purple-800">{summaryObj.aiResponse}</p>
-                      </div>
-                    )}
-                  </div>
-                )))}
-              </div>
-            </div>)
+              <button
+                onClick={() => openNoteModal(note)}
+                className="text-gray-400 hover:text-blue-600 p-1"
+              >
+                <Edit2 className="h-4 w-4" />
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => deleteField("notes", note._id)}
+                className="text-gray-400 hover:text-red-600 p-1"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <p className="text-gray-600 text-sm mb-4 break-words line-clamp-3 overflow-hidden">{note.description}</p>
+        
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <span className="text-xs text-gray-500 order-2 sm:order-1">{note.createdAt}</span>
+          <button
+            onClick={() => generateAISummary(note._id)}
+            disabled={summaryObj?.id === note._id && summaryObj?.aiResponse}
+            className="bg-purple-100 hover:bg-purple-200 text-purple-700 px-3 py-1 rounded-full text-xs flex items-center space-x-1 disabled:opacity-50 order-1 sm:order-2 w-full sm:w-auto justify-center"
+          >
+            <Sparkles className="h-3 w-3" />
+            <span>{(!responseLoaded && summaryObj?.id === note._id) ? 'Generating...' : 'AI Summary'}</span>
+          </button>
+        </div>
+        
+        {summaryObj?.id === note._id && summaryObj?.aiResponse && (
+          <div onClick={() => { setSummaryObj(null) }} className="mt-4 p-3 cursor-pointer bg-purple-50 rounded-md">
+            <p className="text-sm text-purple-800 break-words">{summaryObj.aiResponse}</p>
+          </div>
+        )}
+      </div>
+    )))}
+  </div>
+</div>)
           }
   
           {/* Tasks Tab */}

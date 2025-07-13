@@ -17,7 +17,7 @@ const Login = () => {
             e.preventDefault()
             axios.defaults.withCredentials=true
             if(loginstate==="Signup"){
-                const {data}=await axios.post("http://localhost:3000/api/register",{username:username.current.value,email:email.current.value,password:password.current.value})
+                const {data}=await axios.post("/api/register",{username:username.current.value,email:email.current.value,password:password.current.value})
                 if (data.success){
                 setloginstate("Login")               
                 toast.success('User registered successfully!')
@@ -31,7 +31,7 @@ const Login = () => {
                 }
             }
             else if(loginstate==="Login"){
-                const {data}=await axios.post("http://localhost:3000/api/login",{email:email.current.value,password:password.current.value})
+                const {data}=await axios.post("/api/login",{email:email.current.value,password:password.current.value})
                 console.log(data)
                 if(data.success){
                     toast.success("Logging you in")
@@ -57,7 +57,7 @@ const Login = () => {
     useEffect(()=>{
         const checkLoggedIn=async()=>{
             axios.defaults.withCredentials=true
-            const {data}=await axios.get("http://localhost:3000/api/checkAuth")
+            const {data}=await axios.get("/api/checkAuth")
             if(data.loggedIn) router.push("/dashboard")
         }
         checkLoggedIn()
